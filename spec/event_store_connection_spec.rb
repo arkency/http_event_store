@@ -21,11 +21,32 @@ module HttpEventstore
       expect(client.event_store[stream_name].length).to eq 4
     end
 
+    specify 'event creation raise error if expected version is incorrect' do
+      allow(client).to receive(:append_to_stream).and_raise(ClientError.new(400))
+      expect{connection.append_to_stream(stream_name, 'event_type', 'event_data', 1)}.to raise_error(WrongExpectedEventNumber)
+    end
+
+    specify 'event creation raise error if stream doesnt exist' do
+      allow(client).to receive(:append_to_stream).and_raise(ClientError.new(410))
+      expect{connection.append_to_stream(stream_name, 'event_type', 'event_data', 1)}.to raise_error(StreamAlreadyDeleted)
+    end
+
+    specify 'event creation raise error if method arguments are incorrect' do
+      expect{connection.append_to_stream('stream_name', 'event_type', nil)}.to raise_error(IncorrectStreamData)
+      expect{connection.append_to_stream('stream_name', nil, 'event_data')}.to raise_error(IncorrectStreamData)
+      expect{connection.append_to_stream(nil, 'event_type', 'event_data')}.to raise_error(IncorrectStreamData)
+    end
+
     specify 'can deleted stream in es' do
       create_stream
       expect(client.event_store[stream_name].length).to eq 4
       connection.delete_stream(stream_name)
       expect(client.event_store[stream_name]).to eq nil
+    end
+
+    specify 'event creation raise error if method arguments are incorrect' do
+      expect{connection.delete_stream(nil)}.to raise_error(IncorrectStreamData)
+      expect{connection.delete_stream('')}.to raise_error(IncorrectStreamData)
     end
 
     specify 'can load all events backward' do
@@ -44,6 +65,20 @@ module HttpEventstore
       expect(events[1][:type]).to eq 'EventType2'
       expect(events[2][:type]).to eq 'EventType3'
       expect(events[3][:type]).to eq 'EventType4'
+    end
+
+    specify 'event creation raise error if method arguments are incorrect' do
+      allow(client).to receive(:read_stream_forward).and_raise(ClientError.new(410))
+      allow(client).to receive(:read_stream_backward).and_raise(ClientError.new(410))
+      expect{connection.read_all_events_forward(stream_name)}.to raise_error(StreamAlreadyDeleted)
+      expect{connection.read_all_events_backward(stream_name)}.to raise_error(StreamAlreadyDeleted)
+    end
+
+    specify 'event creation raise error if method arguments are incorrect' do
+      allow(client).to receive(:read_stream_forward).and_raise(ClientError.new(404))
+      allow(client).to receive(:read_stream_backward).and_raise(ClientError.new(404))
+      expect{connection.read_all_events_forward(stream_name)}.to raise_error(StreamNotExist)
+      expect{connection.read_all_events_backward(stream_name)}.to raise_error(StreamNotExist)
     end
 
     private

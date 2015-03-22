@@ -8,14 +8,14 @@ module HttpEventstore
     end
     attr_reader :event_store
 
-    def append_to_stream(stream_name, event_data)
+    def append_to_stream(stream_name, event_data, expected_version)
       unless event_store.key?(stream_name)
         event_store[stream_name] = []
       end
       event_store[stream_name].unshift({'eventId' => event_data.event_id, 'data' => event_data.data.to_json, 'eventType' => event_data.type})
     end
 
-    def delete_stream(stream_name)
+    def delete_stream(stream_name, hard_delete)
       event_store.delete(stream_name)
     end
 

@@ -5,16 +5,18 @@ module HttpEventstore
       @client = client
     end
 
-    def call(stream_name)
-      raise IncorrectStreamData if stream_name.empty? || stream_name.nil?
-      delete_stream(stream_name)
+    def call(stream_name, hard_delete)
+      raise IncorrectStreamData if stream_name.nil? || stream_name.empty?
+      delete_stream(stream_name, hard_delete)
+    rescue ClientError => e
+      raise StreamAlreadyDeleted
     end
 
     private
     attr_reader :client
 
-    def delete_stream(stream_name)
-      client.delete_stream(stream_name)
+    def delete_stream(stream_name, hard_delete)
+      client.delete_stream(stream_name, hard_delete)
     end
   end
 end

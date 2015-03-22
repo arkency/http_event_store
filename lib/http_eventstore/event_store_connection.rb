@@ -1,12 +1,12 @@
 module HttpEventstore
   class EventStoreConnection
 
-    def append_to_stream(stream_name, event_type, event_data)
-      AppendEventToStream.new(client).call(stream_name, event_type, event_data)
+    def append_to_stream(stream_name, event_type, event_data, expected_version = nil)
+      AppendEventToStream.new(client).call(stream_name, event_type, event_data, expected_version)
     end
 
-    def delete_stream(stream_name)
-      DeleteStream.new(client).call(stream_name)
+    def delete_stream(stream_name, hard_delete = false)
+      DeleteStream.new(client).call(stream_name, hard_delete)
     end
 
     def read_all_events_forward(stream_name)

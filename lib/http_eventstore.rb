@@ -1,6 +1,7 @@
 require 'http_eventstore/configuration'
 require 'http_eventstore/client/api_client'
 require 'http_eventstore/client/connection'
+require 'http_eventstore/client/errors_handler'
 require 'http_eventstore/event_store_connection'
 require 'http_eventstore/models/event'
 require 'http_eventstore/models/page_url'

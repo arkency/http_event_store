@@ -9,6 +9,9 @@ module HttpEventstore
       raise IncorrectStreamData if stream_name.nil? || stream_name.empty?
       entries = get_stream_entries(stream_name)
       return_events(entries)
+    rescue ClientError => e
+      raise StreamAlreadyDeleted if e.code == 410
+      raise StreamNotExist if e.code == 404
     end
 
     private

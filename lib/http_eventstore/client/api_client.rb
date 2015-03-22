@@ -1,12 +1,14 @@
 module HttpEventstore
   class ApiClient
 
-    def append_to_stream(stream_name, event)
-      make_request(:post, "/streams/#{stream_name}", event.data, {"ES-EventType" => event.type, "ES-EventId" => event.event_id})
+    def append_to_stream(stream_name, event, expected_version = nil)
+      headers = { "ES-EventType" => event.type, "ES-EventId" => event.event_id, "ES-ExpectedVersion" => "#{expected_version}" }.reject{|key,val| val.empty?}
+      make_request(:post, "/streams/#{stream_name}", event.data, headers)
     end
 
-    def delete_stream(stream_name)
-      make_request(:delete, "/streams/#{stream_name}")
+    def delete_stream(stream_name, hard_delete)
+      headers = { "ES-HardDelete" => "#{hard_delete}" }
+      make_request(:delete, "/streams/#{stream_name}", {}, headers)
     end
 
     def read_stream_backward(stream_name, start, count)
@@ -28,7 +30,7 @@ module HttpEventstore
     end
 
     def connection
-      Connection.new.call
+      @connection ||= Connection.new.call
     end
   end
 end
