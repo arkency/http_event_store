@@ -15,8 +15,9 @@ module HttpEventstore
       make_request(:get, "/streams/#{stream_name}/#{start}/backward/#{count}")
     end
 
-    def read_stream_forward(stream_name, start, count)
-      make_request(:get, "/streams/#{stream_name}/#{start}/forward/#{count}")
+    def read_stream_forward(stream_name, start, count, long_pool = false)
+      headers = long_pool == true ? { "ES-LongPoll" => "#{HttpEventstore.configuration.long_pool_time}" } : {}
+      make_request(:get, "/streams/#{stream_name}/#{start}/forward/#{count}", {}, headers)
     end
 
     private
@@ -32,5 +33,6 @@ module HttpEventstore
     def connection
       @connection ||= Connection.new.call
     end
+
   end
 end

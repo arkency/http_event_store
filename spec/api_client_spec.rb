@@ -6,6 +6,12 @@ module HttpEventstore
     let(:client)      { ApiClient.new }
     let(:stream_name) { 'streamname' }
 
+    before(:each) do
+      HttpEventstore.configure do |config|
+        config.long_pool_time = 10
+      end
+    end
+
     specify 'should add to response proper headers' do
       event = Event.new('event_type', {data: 1})
       expect(client).to receive(:make_request).with(:post, '/streams/streamname', {data: 1}, { 'ES-EventType' => 'event_type', 'ES-EventId' => event.event_id})
@@ -27,8 +33,10 @@ module HttpEventstore
     end
 
     specify 'should add to response proper headers' do
-      expect(client).to receive(:make_request).with(:get, '/streams/streamname/0/forward/20')
+      expect(client).to receive(:make_request).with(:get, '/streams/streamname/0/forward/20', {}, {})
       client.read_stream_forward(stream_name, 0, 20)
+      expect(client).to receive(:make_request).with(:get, '/streams/streamname/0/forward/20', {}, {"ES-LongPoll" => "10"})
+      client.read_stream_forward(stream_name, 0, 20, true)
     end
   end
 end

@@ -12,7 +12,8 @@ module HttpEventstore
       unless event_store.key?(stream_name)
         event_store[stream_name] = []
       end
-      event_store[stream_name].unshift({'eventId' => event_data.event_id, 'data' => event_data.data.to_json, 'eventType' => event_data.type})
+      id = event_store[stream_name].length
+      event_store[stream_name].unshift({'eventId' => event_data.event_id, 'data' => event_data.data.to_json, 'eventType' => event_data.type, 'positionEventNumber' => id})
     end
 
     def delete_stream(stream_name, hard_delete)
@@ -20,23 +21,23 @@ module HttpEventstore
     end
 
     def read_stream_backward(stream_name, start, count)
-      start_index = start == :head ? 0 : start
       if event_store.key?(stream_name)
-        batch_size = start_index + count
-        entries = event_store[stream_name].select.with_index do |event, index|
-          index < batch_size && index >= start_index
+        start_index = start == :head ? event_store[stream_name].length - 1 : start
+        last_index = start_index - count
+        entries = event_store[stream_name].select do |event|
+          event['positionEventNumber'] > last_index && event['positionEventNumber'] <= start_index
         end
-        { 'entries' => entries, 'links' => links(batch_size, stream_name, 'next', entries)}
+        { 'entries' => entries, 'links' => links(last_index, stream_name, 'next', entries)}
       end
     end
 
-    def read_stream_forward(stream_name, start_index, count)
+    def read_stream_forward(stream_name, start_index, count, long_pool = false)
       if event_store.key?(stream_name)
-        batch_size = start_index + count
-        entries = event_store[stream_name].reverse.select.with_index do |event, index|
-          index < batch_size && index >= start_index
+        last_index = start_index + count
+        entries = event_store[stream_name].reverse.select do |event|
+          event['positionEventNumber'] < last_index && event['positionEventNumber'] >= start_index
         end
-        { 'entries' => entries.reverse!, 'links' => links(batch_size, stream_name, 'previous', entries)}
+        { 'entries' => entries.reverse!, 'links' => links(last_index, stream_name, 'previous', entries)}
       end
     end
 
@@ -47,7 +48,7 @@ module HttpEventstore
     private
 
     def links(batch_size, stream_name, direction, entries)
-      if entries.empty?
+      if entries.empty? || batch_size < 0
         []
       else
         [{

@@ -9,6 +9,14 @@ module HttpEventstore
       DeleteStream.new(client).call(stream_name, hard_delete)
     end
 
+    def read_events_forward(stream_name, start, count)
+      ReadStreamEventsForward.new(client).call(stream_name, start, count)
+    end
+
+    def read_events_backward(stream_name, start, count)
+      ReadStreamEventsBackward.new(client).call(stream_name, start, count)
+    end
+
     def read_all_events_forward(stream_name)
       ReadAllStreamEventsForward.new(client).call(stream_name)
     end
