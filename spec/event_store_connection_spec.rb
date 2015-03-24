@@ -77,8 +77,8 @@ module HttpEventstore
     specify 'event creation raise error if method arguments are incorrect' do
       allow(client).to receive(:read_stream_forward).and_raise(ClientError.new(404))
       allow(client).to receive(:read_stream_backward).and_raise(ClientError.new(404))
-      expect{connection.read_all_events_forward(stream_name)}.to raise_error(StreamNotExist)
-      expect{connection.read_all_events_backward(stream_name)}.to raise_error(StreamNotExist)
+      expect{connection.read_all_events_forward(stream_name)}.to raise_error(StreamNotFound)
+      expect{connection.read_all_events_backward(stream_name)}.to raise_error(StreamNotFound)
     end
 
     specify 'can load events forward' do

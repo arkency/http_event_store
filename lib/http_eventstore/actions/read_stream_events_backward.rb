@@ -10,7 +10,7 @@ module HttpEventstore
       return_events(response['entries'])
     rescue ClientError => e
       raise StreamAlreadyDeleted if e.code == 410
-      raise StreamNotExist if e.code == 404
+      raise StreamNotFound if e.code == 404
     end
 
     private

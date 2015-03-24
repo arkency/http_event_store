@@ -16,5 +16,5 @@ module HttpEventstore
   IncorrectStreamData       = Class.new(StandardError)
   WrongExpectedEventNumber  = Class.new(StandardError)
   StreamAlreadyDeleted      = Class.new(StandardError)
-  StreamNotExist            = Class.new(StandardError)
+  StreamNotFound            = Class.new(StandardError)
 end
