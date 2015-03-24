@@ -81,7 +81,7 @@ module HttpEventstore
       expect{connection.read_all_events_backward(stream_name)}.to raise_error(StreamNotExist)
     end
 
-    specify 'test' do
+    specify 'can load events forward' do
       create_stream
       events = connection.read_events_forward(stream_name, 1, 3)
       expect(events[0][:type]).to eq 'EventType4'
@@ -89,7 +89,7 @@ module HttpEventstore
       expect(events[2][:type]).to eq 'EventType2'
     end
 
-    specify 'test' do
+    specify 'can load events backward' do
       create_stream
       events = connection.read_events_backward(stream_name, 3, 3)
       expect(events[0][:type]).to eq 'EventType4'
