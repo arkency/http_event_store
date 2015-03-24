@@ -1,34 +1,116 @@
 # HttpEventstore
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/http_eventstore`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+HttpEventstore is a HTTP connector to the Greg's Event Store.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+1. Add this line to your application's Gemfile:
 
 ```ruby
 gem 'http_eventstore'
 ```
 
-And then execute:
+2. Create initializer file with your configuration in `/config/initializers` directory.
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install http_eventstore
+```ruby
+HttpEventstore.configure do |config|
+  #default value is '127.0.0.1'
+  config.endpoint = 'your_endpoint'
+  #default value is 2113
+  config.port = 'your_port'
+  #default value is 20 entries per page
+  config.page_size = 'your_page_size'
+  #default value is 15s
+  config.long_pool_time = 'your_pool_timeout'
+end
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+To communicate with ES you have to create instance of `HttpEventstore::EventStoreConnection` class. After configuring a client, you can do the following things. 
 
-## Development
+#### Creating new event
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
+Creating a single event:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release` to create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```ruby
+stream_name = "order_1"
+event_type = "OrderCreated"
+event_data = { data: "sample" }
+client.append_to_stream(stream_name, event_type, event_data)
+```
+
+Creating a single event with optimistic locking:
+
+```ruby
+stream_name = "order_1"
+event_type = "OrderCreated"
+event_data = { data: "sample" }
+expected_version = 1 
+client.append_to_stream(stream_name, event_type, event_data, expected_version)
+```
+
+#### Deleting stream
+
+The soft delete of single stream:
+
+```ruby
+stream_name = "order_1"
+client.delete_stream("stream_name")
+```
+
+The hard delete of single stream:
+
+```ruby
+stream_name = "order_1"
+hard_delete = true
+client.delete_stream("stream_name", hard_delete)
+```
+
+The soft delete cause that you will be allowed to recreate the stream by creating new event. If you recreate soft deleted stream all events are lost.
+After an hard delete any try to load the stream or create event will result in a 410 response.
+
+#### Reading stream's event forward
+
+```ruby
+stream_name = "order_1"
+start = 21
+count = 40
+client.read_events_forward(stream_name, start, count)
+```
+
+*If you call above method to get the newest entries and no data is available the server wait some period of time. The amount of time is specified in config file as a `long_pool_time`
+
+#### Reading stream's event backward
+
+```ruby
+stream_name = "order_1"
+start = 21
+count = 40
+client.read_events_backward(stream_name, start, count)
+```
+
+#### Reading all stream's event forward
+
+This method allows us to load all stream's events ascending.
+
+```ruby
+stream_name = "order_1"
+client.read_all_events_forward(stream_name)
+```
+
+#### Reading all stream's event backward
+
+This method allows us to load all stream's events descending.
+
+```ruby
+stream_name = "order_1"
+client.read_all_events_backward(stream_name)
+```
+
+## Supported version's of Event Store
+
+To take advantage of all the functionality offered by our gem the minimum recommended version of Event Store is `2.1`
 
 ## Contributing
 
