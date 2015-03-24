@@ -20,6 +20,10 @@ module HttpEventstore
       make_request(:get, "/streams/#{stream_name}/#{start}/forward/#{count}", {}, headers)
     end
 
+    def read_stream_page(uri)
+      make_request(:get, uri)
+    end
+
     private
 
     def make_request(method, path, body={}, headers={})
