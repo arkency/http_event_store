@@ -1,6 +1,6 @@
 # HttpEventstore
 
-HttpEventstore is a HTTP connector to the Greg's Event Store.
+HttpEventstore is a HTTP connector to the Greg's [Event Store](https://geteventstore.com/).
 
 ## Installation
 
@@ -79,7 +79,7 @@ count = 40
 client.read_events_forward(stream_name, start, count)
 ```
 
-*If you call above method to get the newest entries and no data is available the server wait some period of time. The amount of time is specified in config file as a `long_pool_time`
+*If you call above method to get the newest entries and no data is available the server wait some period of time. The amount of time is specified in config file as a **long_pool_time**
 
 #### Reading stream's event backward
 
@@ -110,7 +110,7 @@ client.read_all_events_backward(stream_name)
 
 ## Supported version's of Event Store
 
-To take advantage of all the functionality offered by our gem the minimum recommended version of Event Store is `2.1`
+To take advantage of all the functionality offered by our gem the minimum recommended version of Event Store is **2.1**
 
 ## Contributing
 
