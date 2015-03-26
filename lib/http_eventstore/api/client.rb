@@ -22,7 +22,7 @@ module HttpEventstore
         make_request(:get, "/streams/#{stream_name}/#{start}/backward/#{count}")
       end
 
-      def read_stream_forward(stream_name, start, count, long_pool)
+      def read_stream_forward(stream_name, start, count, long_pool = 0)
         headers = long_pool > 0 ? {"ES-LongPoll" => "#{long_pool}"} : {}
         make_request(:get, "/streams/#{stream_name}/#{start}/forward/#{count}", {}, headers)
       end
