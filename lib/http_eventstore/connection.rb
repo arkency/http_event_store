@@ -1,34 +1,39 @@
 module HttpEventstore
-  class EventStoreConnection
+  class Connection
+    attr_accessor :endpoint, :port, :page_size
+
+    def initialize
+      yield(self) if block_given?
+    end
 
     def append_to_stream(stream_name, event_type, event_data, expected_version = nil)
-      AppendEventToStream.new(client).call(stream_name, event_type, event_data, expected_version)
+      Actions::AppendEventToStream.new(client).call(stream_name, event_type, event_data, expected_version)
     end
 
     def delete_stream(stream_name, hard_delete = false)
-      DeleteStream.new(client).call(stream_name, hard_delete)
+      Actions::DeleteStream.new(client).call(stream_name, hard_delete)
     end
 
-    def read_events_forward(stream_name, start, count)
-      ReadStreamEventsForward.new(client).call(stream_name, start, count)
+    def read_events_forward(stream_name, start, count, pool = 0)
+      Actions::ReadStreamEventsForward.new(client).call(stream_name, start, count, pool)
     end
 
     def read_events_backward(stream_name, start, count)
-      ReadStreamEventsBackward.new(client).call(stream_name, start, count)
+      Actions::ReadStreamEventsBackward.new(client).call(stream_name, start, count)
     end
 
     def read_all_events_forward(stream_name)
-      ReadAllStreamEventsForward.new(client).call(stream_name)
+      Actions::ReadAllStreamEventsForward.new(client, page_size).call(stream_name)
     end
 
     def read_all_events_backward(stream_name)
-      ReadAllStreamEventsBackward.new(client).call(stream_name)
+      Actions::ReadAllStreamEventsBackward.new(client, page_size).call(stream_name)
     end
 
     private
 
     def client
-      @client ||= ApiClient.new
+      @client ||= Api::Client.new(endpoint, port, page_size)
     end
   end
 end
