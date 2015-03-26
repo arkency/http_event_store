@@ -4,30 +4,23 @@ HttpEventstore is a HTTP connector to the Greg's [Event Store](https://getevents
 
 ## Installation
 
-1. Add this line to your application's Gemfile:
+Add this line to your application's Gemfile:
 
 ```ruby
 gem 'http_eventstore'
 ```
 
-2. Create initializer file with your configuration in `/config/initializers` directory.
-
-```ruby
-HttpEventstore.configure do |config|
-  #default value is '127.0.0.1'
-  config.endpoint = 'your_endpoint'
-  #default value is 2113
-  config.port = 'your_port'
-  #default value is 20 entries per page
-  config.page_size = 'your_page_size'
-  #default value is 15s
-  config.long_pool_time = 'your_pool_timeout'
-end
-```
-
 ## Usage
 
-To communicate with ES you have to create instance of `HttpEventstore::EventStoreConnection` class. After configuring a client, you can do the following things. 
+To communicate with ES you have to create instance of `HttpEventstore::Connection` class. After configuring a client, you can do the following things.
+ 
+```ruby
+client = HttpEventstore::Connection.new do |config|
+   config.endpoint = 'localhost'
+   config.port = 2113
+   config.page_size = 20
+end
+```
 
 #### Creating new event
 
@@ -79,7 +72,15 @@ count = 40
 client.read_events_forward(stream_name, start, count)
 ```
 
-*If you call above method to get the newest entries and no data is available the server wait some period of time. The amount of time is specified in config file as a **long_pool_time**
+If you call following method to get the newest entries and no data is available the server wait some specified period of time.
+
+```ruby
+stream_name = "order_1"
+start = 21
+count = 40
+pool_time = 15
+client.read_events_forward(stream_name, start, count, poll_time)
+```
 
 #### Reading stream's event backward
 
