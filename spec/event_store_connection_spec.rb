@@ -2,16 +2,19 @@ require 'spec_helper'
 
 module HttpEventstore
   describe Connection do
+    ENDPOINT  = 'localhost'
+    PORT      = 2113
+    PAGE_SIZE = 20
 
-    let(:client) { InMemoryEs.new }
+    let(:client) { InMemoryEs.new(ENDPOINT, PORT, PAGE_SIZE) }
     let(:events) { prepare_events }
     let(:stream_name) { 'teststream' }
 
     before(:each) do
       @connection = Connection.new do |config|
-        config.endpoint = 'localhost'
-        config.port = 2113
-        config.page_size = 20
+        config.endpoint   = ENDPOINT
+        config.port       = PORT
+        config.page_size  = PAGE_SIZE
       end
       allow(@connection).to receive(:client).and_return(client)
       client.reset!

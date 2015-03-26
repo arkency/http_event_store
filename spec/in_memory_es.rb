@@ -3,12 +3,14 @@ require 'json'
 module HttpEventstore
   class InMemoryEs
 
-    def initialize
+    def initialize(endpoint, port, page_size)
+      @endpoint = Endpoint.new(endpoint, port)
+      @page_size = page_size
       @event_store = {}
     end
-    attr_reader :event_store
+    attr_reader :endpoint, :page_size, :event_store
 
-    def append_to_stream(stream_name, event_data, expected_version)
+    def append_to_stream(stream_name, event_data, expected_version = nil)
       unless event_store.key?(stream_name)
         event_store[stream_name] = []
       end
@@ -44,7 +46,7 @@ module HttpEventstore
       end
     end
 
-    def read_stream_forward(stream_name, start_index, count, long_pool)
+    def read_stream_forward(stream_name, start_index, count, long_pool = 0)
       if event_store.key?(stream_name)
         last_index = start_index + count
         entries = event_store[stream_name].reverse.select do |event|
