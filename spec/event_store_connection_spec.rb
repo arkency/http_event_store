@@ -16,7 +16,7 @@ module HttpEventstore
         config.port       = PORT
         config.page_size  = PAGE_SIZE
       end
-      allow(@connection).to receive(:client).and_return(client)
+      allow(Api::Client).to receive(:new).with(ENDPOINT, PORT, PAGE_SIZE).and_return(client)
       client.reset!
     end
 
