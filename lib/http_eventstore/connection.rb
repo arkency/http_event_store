@@ -3,6 +3,7 @@ module HttpEventstore
     attr_accessor :endpoint, :port, :page_size
 
     def initialize
+      setup_defaults
       yield(self) if block_given?
     end
 
@@ -35,5 +36,12 @@ module HttpEventstore
     def client
       @client ||= Api::Client.new(endpoint, port, page_size)
     end
+
+    def setup_defaults
+      @endpoint  = 'localhost'
+      @port      = 2113
+      @page_size = 20
+    end
+
   end
 end

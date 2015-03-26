@@ -20,6 +20,13 @@ module HttpEventstore
       client.reset!
     end
 
+    specify 'can create connection with default configuration' do
+      default_connection = Connection.new
+      expect(default_connection.endpoint).to eq ENDPOINT
+      expect(default_connection.port).to eq PORT
+      expect(default_connection.page_size).to eq PAGE_SIZE
+    end
+
     specify 'can create new event in stream' do
       create_stream
       expect(client.event_store[stream_name].length).to eq 4
