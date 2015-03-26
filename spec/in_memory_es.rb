@@ -44,7 +44,7 @@ module HttpEventstore
       end
     end
 
-    def read_stream_forward(stream_name, start_index, count, long_pool = false)
+    def read_stream_forward(stream_name, start_index, count, long_pool)
       if event_store.key?(stream_name)
         last_index = start_index + count
         entries = event_store[stream_name].reverse.select do |event|
