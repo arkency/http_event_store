@@ -58,6 +58,10 @@ module HttpEventstore
       @event_store = {}
     end
 
+    def endpoint
+      Endpoint.new('127.0.0.1', 2113)
+    end
+
     private
 
     def links(batch_size, stream_name, direction, entries, count)
@@ -65,7 +69,7 @@ module HttpEventstore
         []
       else
         [{
-             'uri' => "http://127.0.0.1:2113/streams/#{stream_name}/#{batch_size}/#{direction}/#{count}",
+             'uri' => "http://#{endpoint.url}/streams/#{stream_name}/#{batch_size}/#{direction}/#{count}",
              'relation' => direction
          }]
       end

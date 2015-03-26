@@ -1,12 +1,11 @@
 module HttpEventstore
   module Api
-    class ApiClient
+    class Client
 
       def initialize(endpoint, port, page_size)
         @endpoint = Endpoint.new(endpoint, port)
         @page_size = page_size
       end
-
       attr_reader :endpoint, :page_size
 
       def append_to_stream(stream_name, event, expected_version = nil)
@@ -23,8 +22,8 @@ module HttpEventstore
         make_request(:get, "/streams/#{stream_name}/#{start}/backward/#{count}")
       end
 
-      def read_stream_forward(stream_name, start, count, long_pool = false)
-        headers = long_pool == true ? {"ES-LongPoll" => "#{HttpEventstore.configuration.long_pool_time}"} : {}
+      def read_stream_forward(stream_name, start, count, long_pool)
+        headers = long_pool > 0 ? {"ES-LongPoll" => "#{long_pool}"} : {}
         make_request(:get, "/streams/#{stream_name}/#{start}/forward/#{count}", {}, headers)
       end
 
@@ -42,7 +41,7 @@ module HttpEventstore
         end.body
       end
 
-      def request
+      def connection
         @connection ||= Api::Connection.new(endpoint).call
       end
     end
