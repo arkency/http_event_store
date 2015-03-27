@@ -7,8 +7,8 @@ module HttpEventstore
       yield(self) if block_given?
     end
 
-    def append_to_stream(stream_name, event_type, event_data, expected_version = nil)
-      Actions::AppendEventToStream.new(client).call(stream_name, event_type, event_data, expected_version)
+    def append_to_stream(stream_name, event_data, expected_version = nil)
+      Actions::AppendEventToStream.new(client).call(stream_name, event_data, expected_version)
     end
 
     def delete_stream(stream_name, hard_delete = false)

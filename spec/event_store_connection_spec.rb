@@ -27,25 +27,32 @@ module HttpEventstore
       expect(default_connection.page_size).to eq PAGE_SIZE
     end
 
-    specify 'can create new event in stream' do
-      create_stream
-      expect(client.event_store[stream_name].length).to eq 4
+    specify 'can create new event in stream from hash' do
+      create_event_in_es({ event_type: 'event_type', data: 'event_data' })
+      expect(client.event_store[stream_name].length).to eq 1
+    end
+
+    specify 'can create new event in stream from struct' do
+      EventData = Struct.new(:event_type, :data)
+      event_data = EventData.new('event_type', 'event_data')
+      create_event_in_es(event_data)
+      expect(client.event_store[stream_name].length).to eq 1
     end
 
     specify 'event creation raise error if expected version is incorrect' do
       allow(client).to receive(:append_to_stream).and_raise(ClientError.new(400))
-      expect { @connection.append_to_stream(stream_name, 'event_type', 'event_data', 1) }.to raise_error(WrongExpectedEventNumber)
+      expect { create_event_in_es({ event_type: 'event_type', data: 'event_data' }) }.to raise_error(WrongExpectedEventNumber)
     end
 
     specify 'event creation raise error if stream doesnt exist' do
       allow(client).to receive(:append_to_stream).and_raise(ClientError.new(410))
-      expect { @connection.append_to_stream(stream_name, 'event_type', 'event_data', 1) }.to raise_error(StreamAlreadyDeleted)
+      expect { create_event_in_es({ event_type: 'event_type', data: 'event_data' }) }.to raise_error(StreamAlreadyDeleted)
     end
 
     specify 'event creation raise error if method arguments are incorrect' do
-      expect { @connection.append_to_stream('stream_name', 'event_type', nil) }.to raise_error(IncorrectStreamData)
-      expect { @connection.append_to_stream('stream_name', nil, 'event_data') }.to raise_error(IncorrectStreamData)
-      expect { @connection.append_to_stream(nil, 'event_type', 'event_data') }.to raise_error(IncorrectStreamData)
+      expect { create_event_in_es({ event_type: 'event_type', data: nil }) }.to raise_error(IncorrectStreamData)
+      expect { create_event_in_es({ event_type: nil, data: 'event_data' }) }.to raise_error(IncorrectStreamData)
+      expect { @connection.append_to_stream(nil, { event_type: 'event_type', data: 'event_data' }) }.to raise_error(IncorrectStreamData)
     end
 
     specify 'can deleted stream in es' do
@@ -121,8 +128,12 @@ module HttpEventstore
 
     def create_stream
       events.each do |event|
-        @connection.append_to_stream(stream_name, event[:event_type], event[:data])
+        @connection.append_to_stream(stream_name, event)
       end
+    end
+
+    def create_event_in_es(event_data)
+      @connection.append_to_stream(stream_name, event_data)
     end
 
   end

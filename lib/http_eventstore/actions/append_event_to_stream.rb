@@ -6,9 +6,10 @@ module HttpEventstore
         @client = client
       end
 
-      def call(stream_name, event_type, event_data, expected_version = nil)
-        raise IncorrectStreamData if data_incorrect?(stream_name, event_type, event_data)
-        event = create_event(event_type, event_data)
+      def call(stream_name, event_data, expected_version = nil)
+        event_data = OpenStruct.new(event_data) if event_data.is_a?(Hash)
+        event = create_event(event_data)
+        raise IncorrectStreamData if event.validate || stream_name_incorrect?(stream_name)
         create_event_in_es(stream_name, event, expected_version)
       rescue ClientError => e
         raise WrongExpectedEventNumber if e.code == 400
@@ -18,16 +19,19 @@ module HttpEventstore
       private
       attr_reader :client
 
-      def create_event(event_type, event_data)
-        Event.new(event_type, event_data)
+      def create_event(event_data)
+        type = event_data.event_type
+        data = event_data.data
+        event_id = event_data.event_id if event_data.respond_to?(:event_id)
+        Event.new(type, data, event_id)
       end
 
       def create_event_in_es(stream_name, event, expected_version)
         client.append_to_stream(stream_name, event, expected_version)
       end
 
-      def data_incorrect?(stream_name, event_type, event_data)
-        [stream_name, event_type, event_data].any? { |var| var.nil? || var.empty? }
+      def stream_name_incorrect?(stream_name)
+        stream_name.nil? || stream_name.empty?
       end
     end
   end
