@@ -14,11 +14,15 @@ gem 'http_eventstore'
 
 To communicate with ES you have to create instance of `HttpEventstore::Connection` class. After configuring a client, you can do the following things.
  
-```ruby
+```
+#!ruby
 client = HttpEventstore::Connection.new do |config|
-   config.endpoint = 'localhost'
-   config.port = 2113
-   config.page_size = 20
+   #default value is '127.0.0.1'
+   config.endpoint = 'your_endpoint'
+   #default value is 2113
+   config.port = 'your_port'
+   #default value is 20 entries per page
+   config.page_size = 'your_page_size'
 end
 ```
 
@@ -26,21 +30,33 @@ end
 
 Creating a single event:
 
-```ruby
+```
+#!ruby
 stream_name = "order_1"
-event_type = "OrderCreated"
-event_data = { data: "sample" }
-client.append_to_stream(stream_name, event_type, event_data)
+event_data = { event_type: "OrderCreated",
+               data: { data: "sample" },
+               event_id: "b2d506fd-409d-4ec7-b02f-c6d2295c7edd" }
+client.append_to_stream(stream_name, event_data)
+```
+
+OR
+
+```
+#!ruby
+EventData = Struct.new(:data, :event_type)
+stream_name = "order_1"
+event_data = EventData.new({ data: "sample" }, "OrderCreated")
+client.append_to_stream(stream_name, event_data)
 ```
 
 Creating a single event with optimistic locking:
 
-```ruby
+```
+#!ruby
 stream_name = "order_1"
-event_type = "OrderCreated"
-event_data = { data: "sample" }
-expected_version = 1 
-client.append_to_stream(stream_name, event_type, event_data, expected_version)
+event_data = { event_type: "OrderCreated", data: { data: "sample" }}
+expected_version = 1
+client.append_to_stream(stream_name, event_data, expected_version)
 ```
 
 #### Deleting stream
