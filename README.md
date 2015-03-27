@@ -14,8 +14,7 @@ gem 'http_eventstore'
 
 To communicate with ES you have to create instance of `HttpEventstore::Connection` class. After configuring a client, you can do the following things.
  
-```
-#!ruby
+```ruby
 client = HttpEventstore::Connection.new do |config|
    #default value is '127.0.0.1'
    config.endpoint = 'your_endpoint'
@@ -30,8 +29,7 @@ end
 
 Creating a single event:
 
-```
-#!ruby
+```ruby
 stream_name = "order_1"
 event_data = { event_type: "OrderCreated",
                data: { data: "sample" },
@@ -41,8 +39,7 @@ client.append_to_stream(stream_name, event_data)
 
 OR
 
-```
-#!ruby
+```ruby
 EventData = Struct.new(:data, :event_type)
 stream_name = "order_1"
 event_data = EventData.new({ data: "sample" }, "OrderCreated")
@@ -51,8 +48,7 @@ client.append_to_stream(stream_name, event_data)
 
 Creating a single event with optimistic locking:
 
-```
-#!ruby
+```ruby
 stream_name = "order_1"
 event_data = { event_type: "OrderCreated", data: { data: "sample" }}
 expected_version = 1
