@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/arkency/http_eventstore.svg?branch=master)](https://travis-ci.org/arkency/http_eventstore)
+[![Gem Version](https://badge.fury.io/rb/http_eventstore.svg)](http://badge.fury.io/rb/http_eventstore)
 
 # HttpEventstore
 
