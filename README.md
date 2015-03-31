@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/arkency/http_eventstore.svg?branch=master)](https://travis-ci.org/arkency/http_eventstore)
+
 # HttpEventstore
 
 HttpEventstore is a HTTP connector to the Greg's [Event Store](https://geteventstore.com/).
@@ -13,7 +15,7 @@ gem 'http_eventstore'
 ## Usage
 
 To communicate with ES you have to create instance of `HttpEventstore::Connection` class. After configuring a client, you can do the following things.
- 
+
 ```ruby
 client = HttpEventstore::Connection.new do |config|
    #default value is '127.0.0.1'
