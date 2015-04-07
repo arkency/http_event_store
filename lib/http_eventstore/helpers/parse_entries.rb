@@ -11,7 +11,6 @@ module HttpEventstore
       private
 
       def create_event(entry)
-        p entry
         id = entry['eventNumber']
         event_id = entry['eventId']
         type = entry['eventType']
