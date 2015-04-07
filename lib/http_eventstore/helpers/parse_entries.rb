@@ -15,7 +15,8 @@ module HttpEventstore
         event_id = entry['eventId']
         type = entry['eventType']
         data = JSON.parse(entry['data'])
-        Event.new(type, data, event_id, id)
+        stream_name = entry['streamName']
+        Event.new(type, data, event_id, id, stream_name)
       end
     end
   end
