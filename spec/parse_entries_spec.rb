@@ -13,6 +13,8 @@ module HttpEventstore
         expect(events[0].data).to eq({"a" => "1"})
         expect(events[0].event_id).to eq "fbf4a1a1-b4a3-4dfe-a01f-6668634e16e4"
         expect(events[0].id).to eq 47
+        expect(events[0].position).to eq 51
+        expect(events[0].stream_name).to eq('entries')
       end
 
       private
@@ -21,7 +23,9 @@ module HttpEventstore
         [{"eventId" => "fbf4a1a1-b4a3-4dfe-a01f-6668634e16e4",
           "eventType" => "entryCreated",
           "data" => "{\n  \"a\": \"1\"\n}",
-          "positionEventNumber" => 47,
+          "eventNumber" => 47,
+          "positionEventNumber" => 51,
+          "streamId" => 'entries'
          }]
       end
     end

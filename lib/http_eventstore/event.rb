@@ -1,7 +1,7 @@
 require 'securerandom'
 
-class Event < Struct.new(:type, :data, :event_id, :id)
-  def initialize(type, data, event_id = nil, id = nil)
+class Event < Struct.new(:type, :data, :event_id, :id, :position, :stream_name)
+  def initialize(type, data, event_id=nil, id=nil, position=nil, stream_name=nil)
     event_id = SecureRandom.uuid if event_id.nil?
     super
   end
