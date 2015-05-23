@@ -1,8 +1,8 @@
 language: ruby
 rvm:
-  - 2.1.2
-
+- 2.1.2
 before_install: gem install bundler
-
-gemfile:
-  Gemfile
+gemfile: Gemfile
+notifications:
+  slack:
+    secure: DhTubz8XU/uzGEV3g4FhWfedYcQRqzB6jEZ6/iSjIhk8D77b/GO/RVXezYG5dNTmmlunOYTm1kGIlxu33yFH+8r33Q4tj7TDtt/yrGO3UvwiEP7UJcvThpMUs3BusGVz4INCnpoinh3Hz56d1tELLlmcnPkjg/mlReje6MIHg+Y=
