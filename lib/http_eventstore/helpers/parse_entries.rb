@@ -5,7 +5,7 @@ module HttpEventstore
       def call(entries)
         entries.collect do |entry|
           create_event(entry)
-        end
+        end.compact
       end
 
       private
@@ -14,6 +14,7 @@ module HttpEventstore
         id = entry['eventNumber']
         event_id = entry['eventId']
         type = entry['eventType']
+        return nil unless entry['data']
         data = JSON.parse(entry['data'])
         stream_name = entry['streamId']
         position = entry['positionEventNumber']
