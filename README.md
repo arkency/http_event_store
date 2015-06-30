@@ -135,3 +135,11 @@ To take advantage of all the functionality offered by our gem the minimum recomm
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+## About
+
+<img src="http://arkency.com/images/arkency.png" alt="Arkency" width="20%" align="left" />
+
+React Koans is funded and maintained by Arkency. Check out our other [open-source projects](https://github.com/arkency).
+
+You can also [hire us](http://arkency.com) or [read our blog](http://blog.arkency.com).
