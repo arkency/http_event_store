@@ -15,6 +15,7 @@ module HttpEventstore
         expect(events[0].id).to eq 47
         expect(events[0].position).to eq 51
         expect(events[0].stream_name).to eq('entries')
+        expect(events[0].created_time).to eq(Time.parse("2015-06-30T02:02:01Z"))
       end
 
       specify 'tolerates deleted stream events' do
@@ -49,7 +50,8 @@ module HttpEventstore
           "data" => "{\n  \"a\": \"1\"\n}",
           "eventNumber" => 47,
           "positionEventNumber" => 51,
-          "streamId" => 'entries'
+          "streamId" => 'entries',
+          "updated" => "2015-06-30T02:02:01Z"
         }
       end
 

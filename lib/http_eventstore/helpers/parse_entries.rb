@@ -18,7 +18,8 @@ module HttpEventstore
         data = JSON.parse(entry['data'])
         stream_name = entry['streamId']
         position = entry['positionEventNumber']
-        Event.new(type, data, event_id, id, position, stream_name)
+        created_time = entry['updated'] ? Time.parse(entry['updated']) : nil
+        Event.new(type, data, event_id, id, position, stream_name, created_time)
       end
     end
   end
