@@ -1,9 +1,8 @@
 [![Build Status](https://travis-ci.org/arkency/http_eventstore.svg?branch=master)](https://travis-ci.org/arkency/http_eventstore)
 [![Gem Version](https://badge.fury.io/rb/http_eventstore.svg)](http://badge.fury.io/rb/http_eventstore)
+[![Join the chat at https://gitter.im/arkency/http_eventstore](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/arkency/http_eventstore?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # HttpEventstore
-
-[![Join the chat at https://gitter.im/arkency/http_eventstore](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/arkency/http_eventstore?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 HttpEventstore is a HTTP connector to the Greg's [Event Store](https://geteventstore.com/).
 
