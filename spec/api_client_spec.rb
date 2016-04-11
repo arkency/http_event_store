@@ -15,6 +15,16 @@ module HttpEventstore
         client.append_to_stream(stream_name, event, 1)
       end
 
+      specify '#append_events_to_stream' do
+        event1 = Event.new('event-type', {data: 1})
+        event2 = Event.new('event-type2', {data: 2})
+        events = [event1, event2]
+
+        expect(client).to receive(:make_request).with(:post, '/streams/streamname', [{eventId: event1.event_id, eventType: event1.type, data: event1.data},{eventId: event2.event_id, eventType: event2.type, data: event2.data}], {'ES-ExpectedVersion' => '1'})
+        client.append_events_to_stream(stream_name, events, 1)
+
+      end
+
       specify '#delete_stream' do
         expect(client).to receive(:make_request).with(:delete, '/streams/streamname', {}, {'ES-HardDelete' => 'false'})
         client.delete_stream(stream_name, false)

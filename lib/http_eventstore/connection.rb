@@ -11,6 +11,10 @@ module HttpEventstore
       Actions::AppendEventToStream.new(client).call(stream_name, event_data, expected_version)
     end
 
+    def append_events_to_stream(stream_name, events_data, expected_version = nil)
+      Actions::AppendEventsToStream.new(client).call(stream_name, events_data, expected_version)
+    end
+
     def delete_stream(stream_name, hard_delete = false)
       Actions::DeleteStream.new(client).call(stream_name, hard_delete)
     end
