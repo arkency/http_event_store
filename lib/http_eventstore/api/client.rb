@@ -13,6 +13,20 @@ module HttpEventstore
         make_request(:post, "/streams/#{stream_name}", event.data, headers)
       end
 
+      def append_events_to_stream(stream_name, events=[], expected_version = nil)
+        headers = {"ES-ExpectedVersion" => "#{expected_version}"}.reject { |key, val| val.empty? }
+
+        data = events.map do |event|
+          {
+            "eventId": event.event_id,
+            "eventType": event.type,
+            "data": event.data
+          }
+        end
+
+        make_request(:post, "/streams/#{stream_name}", data, headers)
+      end
+
       def delete_stream(stream_name, hard_delete)
         headers = {"ES-HardDelete" => "#{hard_delete}"}
         make_request(:delete, "/streams/#{stream_name}", {}, headers)
