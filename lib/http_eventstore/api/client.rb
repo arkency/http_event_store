@@ -18,9 +18,9 @@ module HttpEventstore
 
         data = events.map do |event|
           {
-            "eventId": event.event_id,
-            "eventType": event.type,
-            "data": event.data
+            eventId:   event.event_id,
+            eventType: event.type,
+            data:      event.data
           }
         end
 
