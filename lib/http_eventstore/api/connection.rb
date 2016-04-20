@@ -10,10 +10,6 @@ module HttpEventstore
       def call
         Faraday.new(
             url: endpoint.url,
-            headers: {
-                accept: APP_JSON,
-                content_type: APP_JSON
-            }
         ) do |builder|
           builder.adapter Faraday.default_adapter
           builder.response :json, content_type: APP_JSON
