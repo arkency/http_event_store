@@ -14,19 +14,22 @@ module HttpEventstore
       unless event_store.key?(stream_name)
         event_store[stream_name] = []
       end
-      id = event_store[stream_name].length
-      event_store[stream_name].unshift({'eventId' => event_data.event_id, 'data' => event_data.data.to_json, 'eventType' => event_data.type, 'positionEventNumber' => id})
+
+      event_data.each do |event|
+        id = event_store[stream_name].length
+        event_store[stream_name].unshift({'eventId' => event.event_id, 'data' => event.data.to_json, 'eventType' => event.type, 'positionEventNumber' => id})
+      end
     end
 
-    def append_events_to_stream(stream_name, events_data=[], expected_version = nil)
-      unless event_store.key?(stream_name)
-        event_store[stream_name] = []
-      end
-      events_data.each do |event_data|
-        id = event_store[stream_name].length
-        event_store[stream_name].unshift({'eventId' => event_data.event_id, 'data' => event_data.data.to_json, 'eventType' => event_data.type, 'positionEventNumber' => id})
-      end
-    end
+    # def append_events_to_stream(stream_name, events_data=[], expected_version = nil)
+    #   unless event_store.key?(stream_name)
+    #     event_store[stream_name] = []
+    #   end
+    #   events_data.each do |event_data|
+    #     id = event_store[stream_name].length
+    #     event_store[stream_name].unshift({'eventId' => event_data.event_id, 'data' => event_data.data.to_json, 'eventType' => event_data.type, 'positionEventNumber' => id})
+    #   end
+    # end
 
     def delete_stream(stream_name, hard_delete)
       event_store.delete(stream_name)

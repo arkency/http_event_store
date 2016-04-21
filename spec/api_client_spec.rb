@@ -7,22 +7,24 @@ module HttpEventstore
       let(:client)      { Client.new('localhost', 2113, 20) }
       let(:stream_name) { 'streamname' }
 
-      specify '#append_to_stream' do
-        event = Event.new('event_type', { data: 1 })
-        expect(client).to receive(:make_request).with(:post, '/streams/streamname',  { data: 1 }, {'accept' => 'application/json', 'content-type' => 'application/json', "ES-EventType" => event.type, "ES-EventId" => event.event_id,})
-        client.append_to_stream(stream_name, event)
-        expect(client).to receive(:make_request).with(:post, '/streams/streamname', { data: 1 }, {'ES-ExpectedVersion' => '1', 'accept' => 'application/json', 'content-type' => 'application/json', "ES-EventType" => event.type, "ES-EventId" => event.event_id,})
-        client.append_to_stream(stream_name, event, 1)
-      end
+      describe '#append_to_stream' do
 
-      specify '#append_events_to_stream' do
-        event1 = Event.new('event-type', {data: 1})
-        event2 = Event.new('event-type2', {data: 2})
-        events = [event1, event2]
+        it "should handle one event" do
+          event = Event.new('event_type', { data: 1 })
+          expect(client).to receive(:make_request).with(:post, '/streams/streamname', [{eventId: event.event_id, eventType: event.type, data: event.data}], {'accept' => 'application/vnd.eventstore.events+json', 'content-type' => 'application/vnd.eventstore.events+json'})
+          client.append_to_stream(stream_name, event)
+          expect(client).to receive(:make_request).with(:post, '/streams/streamname', [{eventId: event.event_id, eventType: event.type, data: event.data}], {'ES-ExpectedVersion' => '1', 'accept' => 'application/vnd.eventstore.events+json', 'content-type' => 'application/vnd.eventstore.events+json'})
+          client.append_to_stream(stream_name, event, 1)
+        end
 
-        expect(client).to receive(:make_request).with(:post, '/streams/streamname', [{eventId: event1.event_id, eventType: event1.type, data: event1.data},{eventId: event2.event_id, eventType: event2.type, data: event2.data}], {'ES-ExpectedVersion' => '1', 'accept' => 'application/vnd.eventstore.events+json', 'content-type' => 'application/vnd.eventstore.events+json'})
-        client.append_events_to_stream(stream_name, events, 1)
+        it "should handle more than one event" do
+          event1 = Event.new('event-type', {data: 1})
+          event2 = Event.new('event-type2', {data: 2})
+          events = [event1, event2]
 
+          expect(client).to receive(:make_request).with(:post, '/streams/streamname', [{eventId: event1.event_id, eventType: event1.type, data: event1.data},{eventId: event2.event_id, eventType: event2.type, data: event2.data}], {'ES-ExpectedVersion' => '1', 'accept' => 'application/vnd.eventstore.events+json', 'content-type' => 'application/vnd.eventstore.events+json'})
+          client.append_to_stream(stream_name, events, 1)
+        end
       end
 
       specify '#delete_stream' do

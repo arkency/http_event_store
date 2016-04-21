@@ -13,15 +13,10 @@ module HttpEventstore
       end
       attr_reader :endpoint, :page_size
 
-      def append_to_stream(stream_name, event, expected_version = nil)
-        headers = JSON_HEADERS.merge({"ES-ExpectedVersion" => "#{expected_version}", "ES-EventType" => event.type, "ES-EventId" => event.event_id,}.reject { |key, val| val.empty? })
-        make_request(:post, "/streams/#{stream_name}", event.data, headers)
-      end
-
-      def append_events_to_stream(stream_name, events=[], expected_version = nil)
+      def append_to_stream(stream_name, event_data, expected_version = nil)
         headers =  VDN_EVENTSTORE_EVENTS_JSON_HEADERS.merge({"ES-ExpectedVersion" => "#{expected_version}"}.reject { |key, val| val.empty? })
 
-        data = events.map do |event|
+        data = [event_data].flatten.map do |event|
           {
             eventId:   event.event_id,
             eventType: event.type,
