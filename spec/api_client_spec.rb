@@ -8,7 +8,7 @@ module HttpEventstore
       let(:stream_name) { 'streamname' }
 
       specify '#append_to_stream' do
-        event = Event.new('event_type', {data: 1})
+        event = HttpEventstore::Event.new('event_type', {data: 1})
         expect(client).to receive(:make_request).with(:post, '/streams/streamname', {data: 1}, {'ES-EventType' => 'event_type', 'ES-EventId' => event.event_id})
         client.append_to_stream(stream_name, event)
         expect(client).to receive(:make_request).with(:post, '/streams/streamname', {data: 1}, {'ES-EventType' => 'event_type', 'ES-EventId' => event.event_id, 'ES-ExpectedVersion' => '1'})
@@ -16,8 +16,8 @@ module HttpEventstore
       end
 
       specify '#append_events_to_stream' do
-        event1 = Event.new('event-type', {data: 1})
-        event2 = Event.new('event-type2', {data: 2})
+        event1 = HttpEventstore::Event.new('event-type', {data: 1})
+        event2 = HttpEventstore::Event.new('event-type2', {data: 2})
         events = [event1, event2]
 
         expect(client).to receive(:make_request).with(:post, '/streams/streamname', [{eventId: event1.event_id, eventType: event1.type, data: event1.data},{eventId: event2.event_id, eventType: event2.type, data: event2.data}], {'ES-ExpectedVersion' => '1'})

@@ -25,7 +25,7 @@ module HttpEventstore
         type = event_data.event_type
         data = event_data.data
         event_id = event_data.event_id if event_data.respond_to?(:event_id)
-        Event.new(type, data, event_id)
+        HttpEventstore::Event.new(type, data, event_id)
       end
 
       def create_event_in_es(stream_name, event, expected_version)
