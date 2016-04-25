@@ -59,6 +59,10 @@ module HttpEventstore
       expect { create_event_in_es({ event_type: 'event_type', data: 'event_data' }) }.to raise_error(StreamAlreadyDeleted)
     end
 
+    specify 'event creation returns new event if data is an empty hash' do
+      expect(create_event_in_es({ event_type: 'event_type', data: {} })).not_to be_nil
+    end
+
     specify 'event creation raise error if method arguments are incorrect' do
       expect { create_event_in_es({ event_type: 'event_type', data: nil }) }.to raise_error(IncorrectStreamData)
       expect { create_event_in_es({ event_type: nil, data: 'event_data' }) }.to raise_error(IncorrectStreamData)

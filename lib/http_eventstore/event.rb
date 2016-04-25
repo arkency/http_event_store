@@ -7,7 +7,7 @@ class HttpEventstore::Event < Struct.new(:type, :data, :event_id, :id, :position
   end
 
   def validate
-    [self.event_id, self.type, self.data].any? { |var| var.nil? || var.empty? }
+    [self.event_id, self.type, self.data].any? { |var| var.nil? || (var.empty? && !var.kind_of?(Hash)) }
   end
 
   def to_json(options)
