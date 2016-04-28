@@ -5,6 +5,7 @@
 # HttpEventstore
 
 HttpEventstore is a HTTP connector to the Greg's [Event Store](https://geteventstore.com/).
+The `master` branch is curently targeting EventStore 3.x, for EventStore 2.x version check `EventStore2.x` branch.
 
 ## Installation
 
