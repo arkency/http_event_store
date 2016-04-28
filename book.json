@@ -1,0 +1,9 @@
+{
+  "title": "HttpEventstore",
+  "plugins": [ "github" ],
+  "pluginsConfig": {
+    "github": {
+      "url": "https://github.com/arkency/http_eventstore"
+    }
+  }
+}
