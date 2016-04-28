@@ -147,7 +147,7 @@ module HttpEventstore
     end
 
     def create_events_in_es(events_data)
-      @connection.append_events_to_stream(stream_name, events_data)
+      @connection.append_to_stream(stream_name, events_data)
     end
 
   end
