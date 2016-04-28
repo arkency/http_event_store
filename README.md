@@ -9,7 +9,7 @@ The `master` branch is curently targeting EventStore 3.x, for EventStore 2.x ver
 
 ## Supported version's of Event Store
 
-To take advantage of all the functionality offered by our gem the minimum recommended version of Event Store is **2.1**
+To take advantage of all the functionality offered by our gem the minimum recommended version of Event Store is **3.0**
 
 ## Contributing
 
