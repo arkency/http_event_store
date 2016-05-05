@@ -35,6 +35,11 @@ module HttpEventstore
       Actions::ReadAllStreamEventsBackward.new(client, page_size).call(stream_name)
     end
 
+    def read_stream_new_events_forward(stream_name)
+      @action ||= Actions::ReadStreamNewEventsForward.new(client, page_size)
+      @action.call(stream_name)
+    end
+
     private
 
     def client
