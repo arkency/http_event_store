@@ -3,14 +3,13 @@ module HttpEventstore
     class ReadStreamNewEventsForward < ReadAllStreamEvents
       def initialize(client, page_size)
         super(client)
-        @start_point = 0
         @count = page_size
         @skip_old_events = true
         @previous_urls = {}
       end
 
       private
-      attr_reader :start_point, :count
+      attr_reader :count
 
       def get_all_stream_entries(stream_name)
         feed = read_initial_feed(stream_name)
@@ -32,7 +31,7 @@ module HttpEventstore
           read_events_by_uri @previous_urls[stream_name]
         else
           begin
-            client.read_stream_forward(stream_name, start_point, count)
+            client.read_stream_forward(stream_name, 0, count)
           rescue ClientError => e
             { 'links' => [], 'entries' => [] } # ignore client error for now
           end
