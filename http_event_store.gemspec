@@ -5,11 +5,11 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 Gem::Specification.new do |spec|
   spec.name          = 'http_eventstore'
   spec.version       = '0.2.0'
-  spec.authors       = ['Tomasz Rybczyński', 'Mirosław Pragłowski']
-  spec.email         = ['tomek.rybka@gmail.com', 'm@praglowski.com', 'dev@arkency.com']
+  spec.authors       = ['Mirosław Pragłowski']
+  spec.email         = ['m@praglowski.com', 'dev@arkency.com']
 
-  spec.summary       = %q{HttpEventstore is a HTTP connector to the Greg's Event Store.}
-  spec.description   = %q{HttpEventstore is a HTTP connector to the Greg's Event Store.}
+  spec.summary       = %q{HttpEventStore is a HTTP connector to the Greg's Event Store.}
+  spec.description   = %q{HttpEventStore is a HTTP connector to the Greg's Event Store.}
   spec.homepage      = "https://github.com/arkency/http_eventstore"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
