@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module HttpEventstore
+module HttpEventStore
   describe Connection do
     ENDPOINT  = 'localhost'
     PORT      = 2113

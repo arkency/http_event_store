@@ -1,4 +1,4 @@
-module HttpEventstore
+module HttpEventStore
   class Connection
     attr_accessor :endpoint, :port, :page_size
 

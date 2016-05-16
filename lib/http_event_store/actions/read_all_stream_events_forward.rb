@@ -1,4 +1,4 @@
-module HttpEventstore
+module HttpEventStore
   module Actions
     class ReadAllStreamEventsForward < ReadAllStreamEvents
 
