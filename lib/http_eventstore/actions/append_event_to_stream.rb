@@ -9,10 +9,14 @@ module HttpEventstore
       end
 
       def call(stream_name, event_data, expected_version = nil)
-        event_data = OpenStruct.new(event_data) if event_data.is_a?(Hash)
-        event = create_event(event_data)
-        raise IncorrectStreamData if event.validate || stream_name_incorrect?(stream_name)
-        create_event_in_es(stream_name, event, expected_version)
+        events = [event_data].flatten.map do |event_data|
+          event_data = OpenStruct.new(event_data) if event_data.is_a?(Hash)
+          event = create_event(event_data)
+          raise IncorrectStreamData if event.validate || stream_name_incorrect?(stream_name)
+          event
+        end
+
+        create_event_in_es(stream_name, events, expected_version)
       rescue ClientError => e
         raise WrongExpectedEventNumber if e.code == 400
         raise StreamAlreadyDeleted if e.code == 410

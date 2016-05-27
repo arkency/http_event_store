@@ -32,6 +32,16 @@ module HttpEventstore
       expect(client.event_store[stream_name].length).to eq 1
     end
 
+    specify 'can create new event in stream from array' do
+      create_events_in_es([{ event_type: 'event_type', data: 'event_data' }])
+      expect(client.event_store[stream_name].length).to eq 1
+    end
+
+     specify 'can create two new events in stream from array' do
+      create_events_in_es([{ event_type: 'event_type', data: 'event_data' },{ event_type: 'event_type', data: 'event_data' }])
+      expect(client.event_store[stream_name].length).to eq 2
+    end
+
     specify 'can create new event in stream from struct' do
       EventData = Struct.new(:event_type, :data)
       event_data = EventData.new('event_type', 'event_data')
@@ -134,6 +144,10 @@ module HttpEventstore
 
     def create_event_in_es(event_data)
       @connection.append_to_stream(stream_name, event_data)
+    end
+
+    def create_events_in_es(events_data)
+      @connection.append_to_stream(stream_name, events_data)
     end
 
   end

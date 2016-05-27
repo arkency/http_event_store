@@ -10,10 +10,6 @@ module HttpEventstore
       def call
         Faraday.new(
             url: endpoint.url,
-            headers: {
-                accept: APP_JSON,
-                content_type: APP_JSON
-            }
         ) do |builder|
           builder.request :retry, max: 4, interval: 0.05,
                            interval_randomness: 0.5, backoff_factor: 2

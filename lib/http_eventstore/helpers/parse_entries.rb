@@ -1,3 +1,5 @@
+require 'time'
+
 module HttpEventstore
   module Helpers
     class ParseEntries
