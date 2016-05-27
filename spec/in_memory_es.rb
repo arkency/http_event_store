@@ -25,7 +25,6 @@ module HttpEventstore
 
     def read_stream_page(uri)
       params = uri.scan(/\/(\w+)\/(\d+)/)
-      puts uri
       stream_name = params[0][0]
       last_index = params[0][1].to_i
       direction = params[1][0]
