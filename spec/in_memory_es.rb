@@ -7,8 +7,9 @@ module HttpEventstore
       @endpoint = Endpoint.new(endpoint, port)
       @page_size = page_size
       @event_store = {}
+      @projection_store = {}
     end
-    attr_reader :endpoint, :page_size, :event_store
+    attr_reader :endpoint, :page_size, :event_store, :projection_store
 
     def append_to_stream(stream_name, event_data, expected_version = nil)
       unless event_store.key?(stream_name)
@@ -67,6 +68,15 @@ module HttpEventstore
         end
         { 'entries' => entries.reverse!, 'links' => links(last_index, stream_name, 'previous', entries, count)}
       end
+    end
+
+    def set_projection_state(projection_name, state)
+      state_key = "/projection/#{projection_name}/state"
+      projection_store[state_key] = state
+    end
+
+    def read_projection_page(key)
+      projection_store[key]
     end
 
     def reset!
