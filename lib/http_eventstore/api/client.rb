@@ -30,6 +30,7 @@ module HttpEventstore
       def read_stream_page(uri)
         make_request(:get, uri)
       end
+      alias_method :read_projection_page, :read_stream_page
 
       private
 
