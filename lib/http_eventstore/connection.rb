@@ -31,6 +31,14 @@ module HttpEventstore
       Actions::ReadAllStreamEventsBackward.new(client, page_size).call(stream_name)
     end
 
+    def read_projection_state(projection_name)
+      Actions::ReadProjectionState.new(client).call(projection_name)
+    end
+
+    def set_projection_state(projection_name, state)
+      Actions::SetProjectionState.new(client).call(projection_name, state)
+    end
+
     private
 
     def client

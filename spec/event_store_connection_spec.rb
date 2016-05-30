@@ -5,6 +5,7 @@ module HttpEventstore
     ENDPOINT  = 'localhost'
     PORT      = 2113
     PAGE_SIZE = 20
+    DEFAULT_STATE = {foo: :bar}
 
     let(:client) { InMemoryEs.new(ENDPOINT, PORT, PAGE_SIZE) }
     let(:events) { prepare_events }
@@ -95,6 +96,13 @@ module HttpEventstore
       expect(events[3][:type]).to eq 'EventType4'
     end
 
+    specify 'can read a projection' do
+      create_projection('TestProjection')
+      projection_name = 'TestProjection'
+      state = @connection.read_projection_state(projection_name)
+      expect(state).to eq DEFAULT_STATE
+    end
+
     specify 'event creation raise error if method arguments are incorrect' do
       allow(client).to receive(:read_stream_forward).and_raise(ClientError.new(410))
       allow(client).to receive(:read_stream_backward).and_raise(ClientError.new(410))
@@ -140,6 +148,10 @@ module HttpEventstore
       events.each do |event|
         @connection.append_to_stream(stream_name, event)
       end
+    end
+
+    def create_projection(projection_name, projection_state=DEFAULT_STATE)
+      @connection.set_projection_state(projection_name, projection_state)
     end
 
     def create_event_in_es(event_data)
