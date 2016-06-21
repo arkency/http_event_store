@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/arkency/http_eventstore.svg?branch=master)](https://travis-ci.org/arkency/http_eventstore)
-[![Gem Version](https://badge.fury.io/rb/http_eventstore.svg)](http://badge.fury.io/rb/http_eventstore)
-[![Join the chat at https://gitter.im/arkency/http_eventstore](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/arkency/http_eventstore?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/arkency/http_event_store.svg?branch=master)](https://travis-ci.org/arkency/http_event_store)
+[![Gem Version](https://badge.fury.io/rb/http_event_store.svg)](http://badge.fury.io/rb/http_event_store)
+[![Join the chat at https://gitter.im/arkency/http_event_store](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/arkency/http_event_store?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # HttpEventstore
 
@@ -13,7 +13,7 @@ To take advantage of all the functionality offered by our gem the minimum recomm
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/http_eventstore/fork )
+1. Fork it ( https://github.com/[my-github-username]/http_event_store/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

@@ -1,9 +1,9 @@
 # Usage
 
-To communicate with ES you have to create instance of `HttpEventstore::Connection` class. After configuring a client, you can do the following things.
+To communicate with ES you have to create instance of `HttpEventStore::Connection` class. After configuring a client, you can do the following things.
 
 ```ruby
-client = HttpEventstore::Connection.new do |config|
+client = HttpEventStore::Connection.new do |config|
   # default value is '127.0.0.1'
   config.endpoint = 'your_endpoint'
   # default value is 2113
