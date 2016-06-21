@@ -7,7 +7,8 @@
 HttpEventStore is a HTTP connector to the Greg's [Event Store](https://geteventstore.com/).
 The `master` branch is curently targeting EventStore 3.x, for EventStore 2.x version check `EventStore2.x` branch.
 
-## Attention: gem has been renamed! The name has changed from http_eventstore to http_event_store.
+## Attention: gem has been renamed!
+#### The name has changed from http_eventstore to http_event_store.
 
 # Documentation
 
