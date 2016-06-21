@@ -1,16 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'http_event_store/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'http_eventstore'
-  spec.version       = '0.2.1'
+  spec.name          = 'http_event_store'
+  spec.version       = HttpEventStore::VERSION
   spec.authors       = ['Mirosław Pragłowski']
   spec.email         = ['m@praglowski.com', 'dev@arkency.com']
 
   spec.summary       = %q{HttpEventStore is a HTTP connector to the Greg's Event Store.}
   spec.description   = %q{HttpEventStore is a HTTP connector to the Greg's Event Store.}
-  spec.homepage      = "https://github.com/arkency/http_eventstore"
+  spec.homepage      = "https://github.com/arkency/http_event_store"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = 'exe'
