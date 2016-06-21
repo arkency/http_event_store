@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module HttpEventstore
+module HttpEventStore
   module Api
     describe Client do
 

@@ -1,7 +1,7 @@
 require 'faraday'
 require 'faraday_middleware'
 
-module HttpEventstore
+module HttpEventStore
   module Api
     class ErrorsHandler < Faraday::Response::Middleware
 

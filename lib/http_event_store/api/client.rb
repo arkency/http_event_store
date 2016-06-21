@@ -1,4 +1,4 @@
-module HttpEventstore
+module HttpEventStore
   module Api
     class Client
       VDN_EVENTSTORE_EVENTS_JSON  = 'application/vnd.eventstore.events+json'.freeze

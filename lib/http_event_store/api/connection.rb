@@ -1,4 +1,4 @@
-module HttpEventstore
+module HttpEventStore
   module Api
     class Connection
       APP_JSON = 'application/json'.freeze

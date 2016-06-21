@@ -1,6 +1,6 @@
 require 'json'
 
-module HttpEventstore
+module HttpEventStore
   class InMemoryEs
 
     def initialize(endpoint, port, page_size)

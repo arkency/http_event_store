@@ -1,10 +1,10 @@
-module HttpEventstore
+module HttpEventStore
   module Actions
-    class ReadAllStreamEventsBackward < ReadAllStreamEvents
+    class ReadAllStreamEventsForward < ReadAllStreamEvents
 
       def initialize(client, page_size)
         super(client)
-        @start_point = :head
+        @start_point = 0
         @count = page_size
       end
 
@@ -12,19 +12,19 @@ module HttpEventstore
       attr_reader :start_point, :count
 
       def append_entries(entries, batch)
-        entries + batch
+        entries + batch.reverse!
       end
 
       def get_stream_batch(stream_name, start)
         if start.nil?
-          read_stream_backward(stream_name, start_point, count)
+          read_stream_forward(stream_name, start_point, count)
         else
           read_stream_by_url(start)
         end
       end
 
-      def read_stream_backward(stream_name, next_id, count)
-        client.read_stream_backward(stream_name, next_id, count)
+      def read_stream_forward(stream_name, next_id, count)
+        client.read_stream_forward(stream_name, next_id, count)
       end
 
       def read_stream_by_url(uri)
@@ -32,7 +32,7 @@ module HttpEventstore
       end
 
       def get_next_start_point(links)
-        link = links.detect { |link| link['relation'] == 'next' }
+        link = links.detect { |link| link['relation'] == 'previous' }
         unless link.nil?
           link['uri'].slice! client.endpoint.url
           link['uri']

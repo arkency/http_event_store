@@ -1,6 +1,6 @@
 require 'ostruct'
 
-module HttpEventstore
+module HttpEventStore
   module Actions
     class AppendEventToStream
 
