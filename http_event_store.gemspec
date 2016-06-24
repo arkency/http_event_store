@@ -6,8 +6,9 @@ require 'http_event_store/version'
 Gem::Specification.new do |spec|
   spec.name          = 'http_event_store'
   spec.version       = HttpEventStore::VERSION
-  spec.authors       = ['Mirosław Pragłowski']
-  spec.email         = ['m@praglowski.com', 'dev@arkency.com']
+  spec.licenses      = ['MIT']
+  spec.authors       = ['Arkency']
+  spec.email         = ['dev@arkency.com']
 
   spec.summary       = %q{HttpEventStore is a HTTP connector to the Greg's Event Store.}
   spec.description   = %q{HttpEventStore is a HTTP connector to the Greg's Event Store.}
