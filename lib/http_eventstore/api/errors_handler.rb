@@ -7,11 +7,12 @@ module HttpEventstore
 
       def on_complete(env)
         code = env[:status]
+        msg = [code, env[:body]].join(': ')
         case code
           when (400..499)
-            raise ClientError.new(code)
+            raise ClientError.new(code, msg)
           when (500..599)
-            raise ServerError.new(code)
+            raise ServerError.new(code, msg)
         end
       end
     end

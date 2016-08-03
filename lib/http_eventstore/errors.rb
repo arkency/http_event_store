@@ -1,16 +1,16 @@
 module HttpEventstore
   class ClientError < StandardError
     attr_accessor :code
-    def initialize(code)
+    def initialize(code, msg = nil)
       @code = code
-      super()
+      super(msg)
     end
   end
   class ServerError < StandardError
     attr_accessor :code
-    def initialize(code)
+    def initialize(code, msg = nil)
       @code = code
-      super()
+      super(msg)
     end
   end
   IncorrectStreamData       = Class.new(StandardError)

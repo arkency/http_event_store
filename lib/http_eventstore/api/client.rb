@@ -45,14 +45,19 @@ module HttpEventstore
         make_request(:get, uri)
       end
 
-      private
-
-      def make_request(method, path, body={}, headers={})
+      def make_request(method, path, body = {}, headers = {})
         connection.send(method, path) do |req|
           req.headers = req.headers.merge(headers)
-          req.body = body.to_json
+          req.body = prepare_body(body, req.headers)
           req.params['embed'] = 'body' if method == :get
         end.body
+      end
+
+      private
+
+      def prepare_body(body, headers)
+        return body.to_json unless headers['Content-Type']&.match /application\/javascript/
+        body
       end
 
       def connection

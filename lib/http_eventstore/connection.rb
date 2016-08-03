@@ -40,6 +40,10 @@ module HttpEventstore
       @action.call(stream_name)
     end
 
+    def request(*args)
+      client.make_request(*args)
+    end
+
     private
 
     def client
