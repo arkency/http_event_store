@@ -14,7 +14,10 @@ module HttpEventstore
       end
 
       def append_events_to_stream(stream_name, events=[], expected_version = nil)
-        headers = {"ES-ExpectedVersion" => "#{expected_version}"}.reject { |key, val| val.empty? }
+        headers = {
+          "Content-Type" => "application/vnd.eventstore.events+json",
+          "ES-ExpectedVersion" => "#{expected_version}"}.reject { |key, val| val.empty?
+        }
 
         data = events.map do |event|
           {
