@@ -33,3 +33,12 @@ To take advantage of all the functionality offered by our gem the minimum recomm
 This repository is funded and maintained by Arkency. Check out our other [open-source projects](https://github.com/arkency).
 
 You can also [hire us](http://arkency.com) or [read our blog](http://blog.arkency.com).
+
+## Learn more about DDD & Event Sourcing
+
+Check our **Rails + Domain Driven Design Workshop** [more details](http://blog.arkency.com/ddd-training/).
+
+Why You should attend? Robert has explained this in [this blogpost](http://blog.arkency.com/2016/12/why-would-you-even-want-to-listen-about-ddd/).
+
+Next edition will be held on **25-26th May 2017** (Thursday & Friday) in Lviv, Ukraine.
+Workshop will be held in English.
