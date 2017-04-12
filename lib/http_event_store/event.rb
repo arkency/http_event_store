@@ -7,7 +7,7 @@ class Event < Struct.new(:type, :data, :source_event_uri, :event_id, :id, :posit
   end
 
   def validate
-    [self.event_id, self.type, self.data].any? { |var| var.nil? || var.empty? }
+    [self.event_id, self.type].any? { |var| var.nil? || var.empty? }
   end
 
   def to_json(options)
