@@ -38,7 +38,7 @@ module HttpEventStore
       expect(client.event_store[stream_name].length).to eq 1
     end
 
-     specify 'can create two new events in stream from array' do
+    specify 'can create two new events in stream from array' do
       create_events_in_es([{ event_type: 'event_type', data: 'event_data' },{ event_type: 'event_type', data: 'event_data' }])
       expect(client.event_store[stream_name].length).to eq 2
     end
@@ -47,6 +47,11 @@ module HttpEventStore
       EventData = Struct.new(:event_type, :data)
       event_data = EventData.new('event_type', 'event_data')
       create_event_in_es(event_data)
+      expect(client.event_store[stream_name].length).to eq 1
+    end
+
+    specify 'can create event with no event data' do
+      create_events_in_es({ event_type: 'event_type', data: {} })
       expect(client.event_store[stream_name].length).to eq 1
     end
 
@@ -61,7 +66,6 @@ module HttpEventStore
     end
 
     specify 'event creation raise error if method arguments are incorrect' do
-      expect { create_event_in_es({ event_type: 'event_type', data: nil }) }.to raise_error(IncorrectStreamData)
       expect { create_event_in_es({ event_type: nil, data: 'event_data' }) }.to raise_error(IncorrectStreamData)
       expect { @connection.append_to_stream(nil, { event_type: 'event_type', data: 'event_data' }) }.to raise_error(IncorrectStreamData)
     end
