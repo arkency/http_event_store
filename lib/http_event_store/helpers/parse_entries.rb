@@ -25,7 +25,7 @@ module HttpEventStore
         created_time     = entry['updated'] ? Time.parse(entry['updated']) : nil
         meta_data        = entry['meta_data'] ? JSON.parse(entry['meta_data']) : nil
 
-        Event.new(type, data, source_event_uri, event_id, id, position, stream_name, created_time, meta_data)
+        Event.new(type, data, meta_data, source_event_uri, event_id, id, position, stream_name, created_time)
       end
     end
   end
