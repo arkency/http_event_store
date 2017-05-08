@@ -13,7 +13,7 @@ module HttpEventStore
       private
 
       def create_event(entry)
-        return nil unless entry['eventType']
+        return nil unless entry['data']
 
         id               = entry['eventNumber']
         event_id         = entry['eventId']
