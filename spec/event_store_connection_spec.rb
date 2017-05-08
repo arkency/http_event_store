@@ -33,9 +33,9 @@ module HttpEventStore
       expect(client.event_store[stream_name].length).to eq 1
     end
 
-    specify 'can create new event with meta_data in stream from hash' do
-      create_event_in_es({ event_type: 'event_type', data: 'event_data', meta_data: "event_meta_data" })
-      expect(client.event_store[stream_name][0]["meta_data"]).to eq "\"event_meta_data\""
+    specify 'can create new event with metadata in stream from hash' do
+      create_event_in_es({ event_type: 'event_type', data: 'event_data', metadata: "event_metadata" })
+      expect(client.event_store[stream_name][0]["metadata"]).to eq "\"event_metadata\""
     end
 
     specify 'can create new event in stream from array' do

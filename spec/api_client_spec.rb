@@ -10,10 +10,10 @@ module HttpEventStore
       describe '#append_to_stream' do
 
         it "should handle one event" do
-          event = Event.new('event_type', { data: 1 }, { meta_data: 2})
-          expect(client).to receive(:make_request).with(:post, '/streams/streamname', [{eventId: event.event_id, eventType: event.type, data: event.data, metadata: { meta_data: 2}}], {'accept' => 'application/vnd.eventstore.events+json', 'content-type' => 'application/vnd.eventstore.events+json'})
+          event = Event.new('event_type', { data: 1 }, { metadata: 2})
+          expect(client).to receive(:make_request).with(:post, '/streams/streamname', [{eventId: event.event_id, eventType: event.type, data: event.data, metadata: { metadata: 2}}], {'accept' => 'application/vnd.eventstore.events+json', 'content-type' => 'application/vnd.eventstore.events+json'})
           client.append_to_stream(stream_name, event)
-          expect(client).to receive(:make_request).with(:post, '/streams/streamname', [{eventId: event.event_id, eventType: event.type, data: event.data, metadata: { meta_data: 2}}], {'ES-ExpectedVersion' => '1', 'accept' => 'application/vnd.eventstore.events+json', 'content-type' => 'application/vnd.eventstore.events+json'})
+          expect(client).to receive(:make_request).with(:post, '/streams/streamname', [{eventId: event.event_id, eventType: event.type, data: event.data, metadata: { metadata: 2}}], {'ES-ExpectedVersion' => '1', 'accept' => 'application/vnd.eventstore.events+json', 'content-type' => 'application/vnd.eventstore.events+json'})
           client.append_to_stream(stream_name, event, 1)
         end
 

@@ -21,7 +21,7 @@ module HttpEventStore
             eventId:   event.event_id,
             eventType: event.type,
             data:      event.data,
-            metadata:  event.meta_data
+            metadata:  event.metadata
           }
         end
 
