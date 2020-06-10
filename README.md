@@ -18,6 +18,11 @@ All documentation and sample codes are available at [http://httpeventstore.arken
 
 To take advantage of all the functionality offered by our gem the minimum recommended version of Event Store is **3.0**
 
+## Alternatives
+
+- [EventStoreClient](https://github.com/yousty/event_store_client/) - For EventStore 5.x.x support
+
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/http_event_store/fork )
