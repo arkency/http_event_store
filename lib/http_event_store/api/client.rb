@@ -20,7 +20,8 @@ module HttpEventStore
           {
             eventId:   event.event_id,
             eventType: event.type,
-            data:      event.data
+            data:      event.data,
+            metadata:  event.metadata
           }
         end
 

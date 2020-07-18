@@ -18,7 +18,7 @@ module HttpEventStore
 
       event_data.each do |event|
         id = event_store[stream_name].length
-        event_store[stream_name].unshift({'eventId' => event.event_id, 'data' => event.data.to_json, 'eventType' => event.type, 'positionEventNumber' => id})
+        event_store[stream_name].unshift({'eventId' => event.event_id, 'data' => event.data.to_json, 'eventType' => event.type, 'positionEventNumber' => id, 'metadata' => event.metadata.to_json})
       end
     end
 
